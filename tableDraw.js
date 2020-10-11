@@ -18,6 +18,11 @@ function tableDraw(xPos, yPos) {
   text('alloy', indent, titlePos);
   indent = indent + 64;
   text('diameter', indent, titlePos);
+  if (GUI == 2){
+    indent = indent + 80;
+    text('spenning', indent, titlePos);
+    indent = indent - 10;
+  }
   indent = indent + 80;
   text('lengde', indent, titlePos);
   indent = indent + 58;
@@ -31,7 +36,12 @@ function tableDraw(xPos, yPos) {
 
   // Drawing table
   let stringValue;
+  let noRows = table.length;
   for (let y = 0; y < table.length; y++) {
+    if (y == 20){
+      noRows = 20;
+      break;
+    }
     indent = xPos;
 
     // no.
@@ -47,6 +57,13 @@ function tableDraw(xPos, yPos) {
     let dia = table[y][2];
     stringValue = Number.parseFloat(dia).toFixed(1);
     text('Ø ' + stringValue + ' mm', indent, tableDrop + y * tableSpacing);
+    
+    // spenning
+    if (GUI == 2){
+      indent = indent + 70;
+      stringValue = Number.parseFloat(table[y][9]).toFixed(1);
+      text(stringValue + ' V', indent, tableDrop + y * tableSpacing);
+    }
 
     // lengde
     indent = indent + 80;
@@ -106,7 +123,7 @@ function tableDraw(xPos, yPos) {
   push();
   if (table.length > 0) {
     fill(100);
-    text('Data gjelder per coil', xPos + 10, tableDrop + table.length * tableSpacing + 6);
+    text('Data gjelder per coil', xPos + 10, tableDrop + noRows * tableSpacing + 6);
   } else {
     textSize(18);
     fill(255,0,0);
