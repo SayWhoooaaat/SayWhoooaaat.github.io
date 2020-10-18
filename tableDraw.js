@@ -38,8 +38,8 @@ function tableDraw(xPos, yPos) {
   let stringValue;
   let noRows = table.length;
   for (let y = 0; y < table.length; y++) {
-    if (y == 20){
-      noRows = 20;
+    if (y == 30){
+      noRows = 30;
       break;
     }
     indent = xPos;

@@ -11,6 +11,7 @@ class UIparameter {
     this.inputField = createInput(nf(this.value));
     this.inputField.size(32,16);
     this.inputField.hide();
+    this.inputField.input(showHint);
     
   }
   
@@ -47,6 +48,7 @@ class UIparameter {
     this.inputField.remove();
     this.inputField = createInput(nf(this.value));
     this.inputField.size(32,16);
+    this.inputField.input(showHint);
   }
   
   autoDetect(){

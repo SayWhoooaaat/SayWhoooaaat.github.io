@@ -1,36 +1,26 @@
-let vx=0;
-let vy=0;
-let px=0;
-let py=0;
-let startX;
-let startY;
-let Dx;
-let Dy;
+function updateGroupPos(pIndex, pos1, pos2) {
+  // ex: group1, 0, 2
+  let xi = pos[pIndex][0];
+  let yi = pos[pIndex][1];
 
-function updatePos(pos,targetX,targetY){
-  if (vx == 0 && vy == 0){
-    startX = pos[0];
-    startY = pos[1];
-    Dx = targetX-startX;
-    Dy = targetY-startY;
-    px=startX;
-    py=startY;
+  let xs = iPos[pIndex][pos1 / 2][0];
+  let ys = iPos[pIndex][pos1 / 2][1];
+
+  let xf = iPos[pIndex][pos2 / 2][0];
+  let yf = iPos[pIndex][pos2 / 2][1];
+
+  let steps = 18;
+  let xi2 = xi + (xf - xs) / steps;
+  let yi2 = yi + (yf - ys) / steps;
+
+  if (abs(xi - xs) > abs(xf - xs) || abs(yi - ys) > abs(yf - ys)) {
+    // stop
+    xi2 = 10000;
+    
   }
-  
-  
-  
-  vx = vx+0.5;
-  vy = vy;//+0.5;
-  px = px + vx;
-  py = py + vy;
-  return [px,py];
-  
-  
-  
+
+
+  return [xi2, yi2];
+
+
 }
-
-
-
-
-
-

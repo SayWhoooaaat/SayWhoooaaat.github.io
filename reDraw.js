@@ -3,30 +3,35 @@ let cbList = [];
 function reDraw() {
   background(255);
   //Drawing stage 1
-  drawG1(G1pos[0], G1pos[1]);
+  drawG1(pos[3][0], pos[3][1]);
   //Drawing stage 2
-  drawG2(G2pos[0], G2pos[1]);
+  drawG2(pos[4][0], pos[4][1]);
   //Drawing stage 3
-  //background(255);
-  tableDraw(G3pos[0], G3pos[1]);
+  tableDraw(pos[5][0], pos[5][1]);
 
   if (GUI == 2) {
     line(500, 10, 500, 1000)
     line(510, 10, 510, 1000)
-    drawGA(GApos[0], GApos[1]);
-    drawGB(GBpos[0], GBpos[1]);
-    //background(255);
-    drawGC(GCpos[0], GCpos[1]);
+  }
+  if (GUI == 2 || GUI == 1 || GUI == 3) {
+    drawGA(pos[0][0], pos[0][1]);
+    drawGB(pos[1][0], pos[1][1]);
+    drawGC(pos[2][0], pos[2][1]);
   }
 
 }
+
+
+
+
+
 
 // ---------------- TEGNE -----------------
 
 function drawG1(xP, yP) {
 
 
-  if (GUI == 0 || GUI == 1) {
+  if (GUI == 0 || GUI == 1 || GUI == 3) {
     image(img, xP + 6, yP + 24, 190, 200);
     button.position(xP + 200, yP);
     line(xP + 190, yP + 10, xP + 170, yP + 10);
@@ -40,8 +45,8 @@ function drawG1(xP, yP) {
     powerUI.show(xP + 194, yP + 166);
     tempUI.show(xP, yP + 200);
     //resUI.showOutput(xP + 184, yP + 200, 2);
-  } else if (GUI == 2 || GUI == 3) {
-    button.position(xP, yP);
+  } else if (GUI == 2) {
+    button.position(4, 4);
   }
 }
 
@@ -116,8 +121,10 @@ function drawGC(xP, yP) {
     if (vListUpdate == true) {
       cbList[i] = createCheckbox('', true);
       cbList[i].position(xC + 56, yC + 18 + i * 12);
+      cbList[i].input(showHint);
       cbList[i + 1] = createCheckbox('', true);
       cbList[i + 1].position(xC + 136, yC + 18 + i * 12);
+      cbList[i + 1].input(showHint);
     }
   }
   for (let i = 0; i < cbList.length; i++) {
@@ -139,4 +146,17 @@ function hideBoxes() {
   for (let i = 0; i < vList.length; i++) {
     cbList[i].hide();
   }
+  showHint();
 }
+
+function showHint(){
+  push();
+  textSize(14);
+  fill(255,0,0);
+  text('Trykk ENTER for å beregne',200,18);
+  pop();
+}
+
+
+
+
