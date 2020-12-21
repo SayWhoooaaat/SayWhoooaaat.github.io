@@ -1,36 +1,39 @@
 function tableDraw(xPos, yPos) {
+  stepDraw(xPos, yPos);
+  
   // Headline
   push();
   textSize(16);
-  text('Alternativer:', xPos, yPos)
+  text('Alternativer:', xPos, yPos + 56)
   pop();
 
   textAlign(RIGHT);
   let tableSpacing = 21;
-  let tableDrop = yPos + 44;
+  let tableDrop = yPos + 100;
 
   // Drawing titles
   let indent = xPos;
-  let titlePos = yPos + 24;
+  let titlePos = yPos + 80;
   indent = indent + 18;
   text('alt.', indent, titlePos);
   indent = indent + 38;
   text('alloy', indent, titlePos);
   indent = indent + 64;
   text('diameter', indent, titlePos);
-  if (GUI == 2){
+  if (layoutNumber != 2){
     indent = indent + 80;
     text('spenning', indent, titlePos);
     indent = indent - 10;
   }
   indent = indent + 80;
   text('lengde', indent, titlePos);
+  indent = indent + 76;
+  text('belastning', indent, titlePos);
+  indent = indent + 58;
+  text('klaring', indent, titlePos);
+  let xLine = indent + 14;
   indent = indent + 58;
   text('vekt', indent, titlePos);
-  indent = indent + 80;
-  text('belastning', indent, titlePos);
-  indent = indent + 62;
-  text('klaring', indent, titlePos);
   indent = indent + 72;
   text('ca. pris', indent, titlePos);
 
@@ -59,7 +62,7 @@ function tableDraw(xPos, yPos) {
     text('Ø ' + stringValue + ' mm', indent, tableDrop + y * tableSpacing);
     
     // spenning
-    if (GUI == 2){
+    if (layoutNumber != 2){
       indent = indent + 70;
       stringValue = Number.parseFloat(table[y][9]).toFixed(1);
       text(stringValue + ' V', indent, tableDrop + y * tableSpacing);
@@ -70,14 +73,10 @@ function tableDraw(xPos, yPos) {
     stringValue = Number.parseFloat(table[y][3]).toFixed(2);
     text(stringValue + ' m', indent, tableDrop + y * tableSpacing);
 
-    // vekt
-    indent = indent + 66;
-    stringValue = Number.parseFloat(table[y][4]).toFixed(2);
-    text(stringValue + ' kg', indent, tableDrop + y * tableSpacing);
-
     // belastning
-    indent = indent + 66;
+    indent = indent + 60;
     let bel = table[y][5];
+    push();
     if (bel > 105) { // fargekoder
       fill(255, 0, 0);
     } else if (bel > 85) {
@@ -89,7 +88,7 @@ function tableDraw(xPos, yPos) {
     text(stringValue + ' %', indent, tableDrop + y * tableSpacing);
 
     // klaring
-    indent = indent + 66;
+    indent = indent + 70;
     let klaring = table[y][6];
     let sd = klaring / dia + 1;
     if (sd < 2.5) { // fargekoder
@@ -101,9 +100,15 @@ function tableDraw(xPos, yPos) {
     }
     stringValue = Number.parseFloat(klaring).toFixed(1);
     text(stringValue + ' mm', indent, tableDrop + y * tableSpacing);
+    pop();
+    
+    // vekt
+    fill(130);
+    indent = indent + 66;
+    stringValue = Number.parseFloat(table[y][4]).toFixed(1);
+    text(stringValue + ' kg', indent, tableDrop + y * tableSpacing);
 
     // pris
-    fill(130);
     indent = indent + 68;
     let pris = table[y][7];
     stringValue = Number.parseFloat(pris).toFixed(0);
@@ -114,16 +119,25 @@ function tableDraw(xPos, yPos) {
     fill(0, 0, 0);
     push();
     stroke(200);
-    line(xPos, tableDrop + 6 + y * tableSpacing, 480 + xPos, tableDrop + 6 + y * tableSpacing);
+    line(xPos, tableDrop + 6 + y * tableSpacing, indent, tableDrop + 6 + y * tableSpacing);
     pop();
   }
+  
+  push();
+  stroke(100);
+  line(xLine, tableDrop - 32, xLine, tableDrop + noRows * tableSpacing + 10);
+  pop();
 
   // Bunntekst
   textAlign(LEFT);
   push();
   if (table.length > 0) {
+    // Forklaring på tabell
+    
     fill(100);
-    text('Data gjelder per coil', xPos + 10, tableDrop + noRows * tableSpacing + 6);
+    text('Tall for ett element', xLine - 240, tableDrop + noRows * tableSpacing + 6);
+    text('Alle elementer totalt', xLine + 10, tableDrop + noRows * tableSpacing + 6);
+    
   } else {
     textSize(18);
     fill(255,0,0);

@@ -1,76 +1,74 @@
 let cbList = [];
+let stepCount;
 
-function reDraw() {
+function reDraw(){
   background(255);
-  //Drawing stage 1
-  drawG1(pos[3][0], pos[3][1]);
-  //Drawing stage 2
-  drawG2(pos[4][0], pos[4][1]);
-  //Drawing stage 3
-  tableDraw(pos[5][0], pos[5][1]);
-
-  if (GUI == 2) {
-    line(500, 10, 500, 1000)
-    line(510, 10, 510, 1000)
+  
+  // Tittelfelt
+  line(510, 10, 510, 1000)
+  line(520, 10, 520, 1000)
+  button.position(4, 4);
+  
+  
+  // Grupper
+  stepCount = 0;
+  if (currentLayout[0][0] == 1){
+    stepCount = stepCount + 1;
+    drawG1(currentLayout[0][1],currentLayout[0][2]);
   }
-  if (GUI == 2 || GUI == 1 || GUI == 3) {
-    drawGA(pos[0][0], pos[0][1]);
-    drawGB(pos[1][0], pos[1][1]);
-    drawGC(pos[2][0], pos[2][1]);
+  if (currentLayout[1][0] == 1){
+    stepCount = stepCount + 1;
+    drawG2(currentLayout[1][1],currentLayout[1][2]);
   }
-
+  if (currentLayout[2][0] == 1){
+    stepCount = stepCount + 1;
+    drawG3(currentLayout[2][1],currentLayout[2][2]);
+  }
+  if (currentLayout[3][0] == 1){
+    stepCount = stepCount + 1;
+    drawG4(currentLayout[3][1],currentLayout[3][2]);
+  }
+  if (currentLayout[4][0] == 1){
+    stepCount = stepCount + 1;
+    drawG5(currentLayout[4][1],currentLayout[4][2]);
+  }
+  if (currentLayout[5][0] == 1){
+    stepCount = stepCount + 1;
+    tableDraw(currentLayout[5][1],currentLayout[5][2]);
+  }
 }
 
-
-
-
+function stepDraw(xP, yP){
+  push();
+  strokeWeight(1);
+  line(xP,yP,xP+450,yP);
+  strokeWeight(1);
+  fill(255);
+  ellipse(xP + 28, yP + 10, 42, 42);
+  pop();
+  text("Steg " + stepCount, xP + 10, yP + 14);
+}
 
 
 // ---------------- TEGNE -----------------
 
 function drawG1(xP, yP) {
-
-
-  if (GUI == 0 || GUI == 1 || GUI == 3) {
-    image(img, xP + 6, yP + 24, 190, 200);
-    button.position(xP + 200, yP);
-    line(xP + 190, yP + 10, xP + 170, yP + 10);
-    line(xP + 190, yP + 10, xP + 170, yP + 10);
-    line(xP + 170, yP + 10, xP + 176, yP + 5);
-    line(xP + 170, yP + 10, xP + 176, yP + 15);
-    line(xP + 220, yP + 30, xP + 220, yP + 50);
-    line(xP + 220, yP + 50, xP + 225, yP + 44);
-    line(xP + 220, yP + 50, xP + 215, yP + 44);
-    voltUI.show(xP + 78, yP);
-    powerUI.show(xP + 194, yP + 166);
-    tempUI.show(xP, yP + 200);
-    //resUI.showOutput(xP + 184, yP + 200, 2);
-  } else if (GUI == 2) {
-    button.position(4, 4);
-  }
-}
-
-function drawG2(xP, yP) {
-  image(img2, xP, yP, 300, 200);
-  lengthUI.show(xP + 80, yP + 50);
-  diaUI.show(xP + 128, yP + 154);
-  image(img3, xP + 330, yP + 80, 90, 100);
-}
-
-function drawGA(xP, yP) {
   image(img4, xP + 30, yP + 20, 440, 230);
+  stepDraw(xP, yP);
+  
   lVoltUI.show(xP, yP + 138);
   tPowerUI.show(xP + 210, yP + 30);
   zonesUI.show(xP + 250, yP + 258);
 
 }
 
-function drawGB(xP, yP) {
-  //background(255);
-  image(img5, xP, yP + 18, 200, 230);
-  zPowerUI.showOutput(xP + 10, yP, 1);
+function drawG2(xP, yP) {
+  image(img5, xP, yP + 50, 200, 230);
+  stepDraw(xP, yP);
+  
+  zPowerUI.showOutput(xP + 50, yP + 34, 1);
   panelsUI.show(xP + 200, yP + 20);
-  tempUI.show(xP + 44, yP + 236);
+  tempUI.show(xP + 44, yP + 266);
 
   image(img6, xP + 260, yP + 80, 160, 160);
   gPowerUI.showOutput(xP + 330, yP + 60, 1);
@@ -78,11 +76,13 @@ function drawGB(xP, yP) {
 }
 
 
-function drawGC(xP, yP) {
-  image(img, xP, yP + 40, 190, 200);
+function drawG3(xP, yP) {
+  image(img, xP, yP + 60, 190, 200);
+  stepDraw(xP, yP);
+  
   push();
   textSize(18);
-  text('V =', xP + 120, yP + 40);
+  text('V =', xP + 120, yP + 60);
   fill(255);
   noStroke();
   rect(xP, yP + 180, 100, 80);
@@ -91,7 +91,7 @@ function drawGC(xP, yP) {
 
   let xC = xP + 186;
   let xCb = xC + 168;
-  let yC = yP;
+  let yC = yP + 16;
   let yCb = yC + 20 + vList.length * 12;
   line(xC, yC, xC + 10, yC);
   line(xC, yC, xC, yCb);
@@ -139,8 +139,38 @@ function drawGC(xP, yP) {
     pop();
   }
 
-
 }
+
+// Gruppe for direkte utregning
+function drawG4(xP, yP) {
+  image(img, xP + 6, yP + 54, 190, 200);
+  stepDraw(xP, yP);
+  button.position(xP + 200, yP);
+  line(xP + 190, yP + 10, xP + 170, yP + 10);
+  line(xP + 190, yP + 10, xP + 170, yP + 10);
+  line(xP + 170, yP + 10, xP + 176, yP + 5);
+  line(xP + 170, yP + 10, xP + 176, yP + 15);
+  line(xP + 220, yP + 30, xP + 220, yP + 50);
+  line(xP + 220, yP + 50, xP + 225, yP + 44);
+  line(xP + 220, yP + 50, xP + 215, yP + 44);
+  voltUI.show(xP + 78, yP + 30);
+  powerUI.show(xP + 194, yP + 196);
+  tempUI.show(xP, yP + 230);
+}
+
+
+function drawG5(xP, yP) {
+  image(img2, xP, yP + 20, 300, 200);
+  stepDraw(xP, yP);
+  
+  lengthUI.show(xP + 80, yP + 70);
+  diaUI.show(xP + 128, yP + 174);
+  image(img3, xP + 330, yP + 98, 90, 100);
+}
+
+
+
+
 
 function hideBoxes() {
   for (let i = 0; i < vList.length; i++) {

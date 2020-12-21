@@ -7,17 +7,30 @@ let vList = [];
 let vListUpdate = true;
 let vChoices = [];
 
-let GUI = 0;
 
-let iPos = [
-  [[-500, 29], [12, 29]], //GroupA
-  [[-500, 350], [40, 350]], //GroupB
-  [[-500, 650], [20, 650]], //GroupC
-  [[50, 50], [50, -300]], //Group1
-  [[40, 300], [540, 10]], //Group2
-  [[20, 530], [520, 230]] //Group3
+let move = false;
+let layoutNumber = 1;
+let oldLayoutNumber;
+let layouts = [ 
+  [ //layout1 (coil)
+    [1, 20, 40], // G1
+    [1, 20, 350], // G2
+    [1, 20, 670], // G3
+    [0, 20, -300], // G4
+    [1, 540, 40], 
+    [1, 540, 270]
+  ],
+  [ // Layout2 (coil direkte)
+    [0, -500, 29], 
+    [0, -500, 350], 
+    [0, -500, 650], 
+    [1, 50, 50], 
+    [1, 50, 350], 
+    [1, 50, 590]
+  ]
 ];
-let pos = [];
+let currentLayout = [];
+
 
 function preload() {
   img = loadImage('Sketch1.png');
@@ -31,20 +44,14 @@ function preload() {
 
 function setup() {
   createCanvas(1100, 1100);
-  // setup initial positions
-  for (let i = 0; i < iPos.length; i++) {
-    pos[i] = [];
-    pos[i][0] = iPos[i][0][0];
-    pos[i][1] = iPos[i][0][1];
-  }
-  // creating UI boxes
+  
+  // Creating UI boxes
   createBoxes();
-  // Button
-  button = createButton('Hjelp');
-  button.mousePressed(GUIchange);
-
-  calculate();
-  reDraw();
+  
+  button = createButton('Setup');
+  // Initializing layout
+  initCurrent();
+  
 }
 
 
@@ -57,44 +64,38 @@ function keyPressed() {
 }
 
 
-
-
-// ENDRE GUI-MODUS
-function GUIchange() {
-  if (GUI == 0) {
-    GUI = 1;
-  } else if (GUI == 2) {
-    GUI = 3;
+// ENDRE LAYOUT
+function layoutchange1() {
+  oldLayoutNumber = layoutNumber;
+  if (layoutNumber == 1) {
+    layoutNumber = 2;
+  } else if (layoutNumber == 2) {
+    layoutNumber = 1;
   }
+  move = true;
 }
 
 
-
-function draw() { // Brukes for animasjoner
-  if (GUI == 1) {
+ // Brukes for animasjoner:
+function draw() {
+  if (move) { 
     // slide
-    slidePos(0,2);
+    slidePos(oldLayoutNumber,layoutNumber);
     reDraw();
-
-    if (pos[4][0] == 10000) {
-      GUI = 2;
-      initGUI2();
-    }
-  } else if (GUI == 3) {
-    // Slide tilbake
-    slidePos(2,0);
-    reDraw();    
-
-    if (pos[4][0] == 10000) {
-      GUI = 0;
-      initGUI0();
+    
+    if (move == false){
+      // Motion complete
+      initCurrent();
     }
   }
 }
 
-function slidePos(oldPos,newPos){
-  for (let i = 0; i < iPos.length; i++){
-    pos[i] = updateGroupPos(i,oldPos,newPos);
+
+function slidePos(oldLay,newLay){
+  for (let i = 0; i < layouts[oldLay-1].length; i++){
+    if (/*layouts[oldLay-1][i][0] == 1*/true){
+      currentLayout[i] = updateGroupPos(i,oldLay,newLay);
+    }
   }
 }
 
@@ -102,7 +103,6 @@ function slidePos(oldPos,newPos){
 /* UNØYAKTIGHETER:
 
 Er ikke toggle for kontaktor/thyristor
-Kina-N80 kan ha andre verdier
 Elementtemp kan variere
 
  - UP NEXT:

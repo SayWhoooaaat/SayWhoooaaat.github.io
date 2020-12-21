@@ -1,56 +1,75 @@
+/* ---------- INITIALIZING NEW LAYOUT ------
+When changing layout:
+1: Delete old UI-boxes & buttons
+2: Update positions
+3: Do motion
+4: Generate new UI-boxes & buttons (CUSTOM)
+5: Cycle registerInput, calculate, reDraw
+*/
 
-function initGUI0(){
-  // Oppdater posisjoner
-  for (let i = 0; i < iPos.length; i++) {
-    pos[i] = [];
-    pos[i][0] = iPos[i][0][0];
-    pos[i][1] = iPos[i][0][1];
+function initCurrent(){
+  if (layoutNumber == 1){
+    init1();
+  } else if (layoutNumber == 2){
+    init2();
   }
-
-  lVoltUI.hide();
-  tPowerUI.hide();
-  zonesUI.hide();
-  panelsUI.hide();
-  coilsUI.hide();
-
-  button.remove();
-  
-  for (let i = 0; i < vList.length; i++) {
-    cbList[i].hide();
-  }
-
-  powerUI.value = round(powerUI.value, 0);
-  powerUI.resetValue();
-  
-  button = createButton('Hjelp');
-  button.mousePressed(GUIchange);
-
-  // Cycle code once
-  registerInput();
-  calculate();
-  reDraw();
 }
 
-function initGUI2(){
-  // Oppdater posisjoner
-  for (let i = 0; i < iPos.length; i++) {
-    pos[i] = [];
-    pos[i][0] = iPos[i][1][0];
-    pos[i][1] = iPos[i][1][1];
-  }
 
-  button.remove();
-  button = createButton('Skjul effektfordeling');
-  button.mousePressed(GUIchange);
-  voltUI.hide();
-
-  // Cycle code once:
+function init1(){
+  layoutNumber = 1;
+  genericInit();
+  
+  button = createButton('Direkte coilberegning');
+  button.mousePressed(layoutchange1);
+  
   registerInput();
   calculate();
   vListUpdate = true;
   reDraw();
 }
 
+function init2(){
+  layoutNumber = 2;
+  genericInit();
+  
+  powerUI.value = round(powerUI.value, 0);
+  powerUI.resetValue();
+  
+  button = createButton('Vis utregning');
+  button.mousePressed(layoutchange1);
+  
+  registerInput();
+  calculate();
+  reDraw();
+}
+
+function genericInit(){
+  // Hides everything
+  voltUI.hide();
+  lVoltUI.hide();
+  tPowerUI.hide();
+  zonesUI.hide();
+  panelsUI.hide();
+  coilsUI.hide();
+  button.remove();
+  
+  // updates coordinates
+  for (let i = 0; i < layouts[layoutNumber-1].length; i++) {
+    currentLayout[i] = [];
+    currentLayout[i][0] = layouts[layoutNumber-1][i][0];
+    currentLayout[i][1] = layouts[layoutNumber-1][i][1];
+    currentLayout[i][2] = layouts[layoutNumber-1][i][2];
+  }
+  
+  // hides checkboxes
+  for (let i = 0; i < vList.length; i++) {
+    cbList[i].hide();
+  }
+}
+
+
+// ------- ONLY SETUP ON STARTUP ------
 function createBoxes(){
   // GUI1 boxes
   voltUI = new UIparameter('Spenning:', 'V', 230, true);

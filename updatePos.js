@@ -1,13 +1,15 @@
-function updateGroupPos(pIndex, pos1, pos2) {
+// ------------ THIS MAKES ANIMATIONS ---------
+
+function updateGroupPos(pIndex, lay1, lay2) {
   // ex: group1, 0, 2
-  let xi = pos[pIndex][0];
-  let yi = pos[pIndex][1];
+  let xi = currentLayout[pIndex][1];
+  let yi = currentLayout[pIndex][2];
 
-  let xs = iPos[pIndex][pos1 / 2][0];
-  let ys = iPos[pIndex][pos1 / 2][1];
+  let xs = layouts[lay1 - 1][pIndex][1];
+  let ys = layouts[lay1 - 1][pIndex][2];
 
-  let xf = iPos[pIndex][pos2 / 2][0];
-  let yf = iPos[pIndex][pos2 / 2][1];
+  let xf = layouts[lay2 - 1][pIndex][1];
+  let yf = layouts[lay2 - 1][pIndex][2];
 
   let steps = 18;
   let xi2 = xi + (xf - xs) / steps;
@@ -15,12 +17,9 @@ function updateGroupPos(pIndex, pos1, pos2) {
 
   if (abs(xi - xs) > abs(xf - xs) || abs(yi - ys) > abs(yf - ys)) {
     // stop
-    xi2 = 10000;
-    
+    move = false;    
   }
 
-
-  return [xi2, yi2];
-
+  return [1, xi2, yi2]; // bieffekt: endrer alle grupper til "vises"
 
 }

@@ -20,13 +20,17 @@ function tableCalc() {
   let price;
   let y = 0;
   let R;
+  
+  let nCoils = 1;
+  if (currentLayout[0][0] == 1) {
+    nCoils = zonesUI.value * panelsUI.value * coilsUI.value;
+  }
 
   // -------- Datafelt ----------
   
   // Loop alle spenninger
   for (let i = 0; i < vChoices.length; i++) {
     R = vChoices[i]*vChoices[i]/powerUI.value;
-    
     // Loop alle materialer
     for (let a = 0; a < noMaterials; a++) {
       r = getRes(elementTemp, a);
@@ -54,10 +58,10 @@ function tableCalc() {
             table[y][1] = alloyData.names[a];
             table[y][2] = d;
             table[y][3] = round(l, 2);
-            table[y][4] = round(m, 2);
+            table[y][4] = round(m * nCoils, 2);
             table[y][5] = round(load);
             table[y][6] = round(klaring, 1);
-            table[y][7] = round(price, 2);
+            table[y][7] = round(price * nCoils, 2);
             table[y][8] = tCost;
             table[y][9] = vChoices[i];
 
